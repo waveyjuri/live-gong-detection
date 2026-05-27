@@ -34,16 +34,30 @@ MIN_SCALE_PX = 30.0        # Fallback/Untergrenze fuer die Normierungsskala in p
 # --- Momentum -> Lautstaerke ---
 V_MIN_INPUT = 2.2          # Geschwindigkeit, die auf die Mindestlautstaerke abbildet
 V_MAX_INPUT = 9.0          # Geschwindigkeit, ab der maximale Lautstaerke erreicht ist
-VOL_FLOOR = 0.20           # Mindestlautstaerke eines ausgeloesten Gongs (0..1)
-LOUDNESS_GAMMA = 0.6       # perzeptuelle Kurve (<1 hebt leise Schlaege an)
+VOL_FLOOR = 0.45           # Mindestlautstaerke eines ausgeloesten Gongs (0..1)
+LOUDNESS_GAMMA = 0.5       # perzeptuelle Kurve (<1 hebt leise Schlaege an)
 
-# --- Gong-Synthese ---
+# --- Gong-Synthese (Tagesschau-Stil: tiefer, wuerdevoller Orchester-Gong/Tam-Tam) ---
 SAMPLE_RATE = 44100
-GONG_DURATION = 2.5        # Sekunden
-GONG_BASE_FREQ = 110.0     # Grundfrequenz in Hz
-# Inharmonische Partials -> metallischer Gong-Klang (keine ganzzahligen Vielfachen)
-GONG_PARTIAL_RATIOS = [1.0, 1.34, 1.78, 2.41, 3.05, 4.2]
-GONG_PARTIAL_AMPS = [1.0, 0.7, 0.55, 0.4, 0.25, 0.15]
-GONG_PARTIAL_DECAYS = [1.2, 1.0, 0.8, 0.6, 0.45, 0.3]   # Abklingzeit pro Partial (s)
-GONG_ATTACK_SEC = 0.004    # kurzer Fade-In gegen Knacken
-MASTER_GAIN = 0.9          # globaler Kopfraum, vermeidet Clipping
+GONG_DURATION = 3.8        # Sekunden (langer, feierlicher Ausklang)
+GONG_BASE_FREQ = 60.0      # tiefe Grundfrequenz in Hz (voller, dunkler Boden)
+# Mischung aus tiefen, nahezu harmonischen Partials (Fundament) und hoeheren
+# inharmonischen Partials (metallischer Schimmer-Wash).
+GONG_PARTIAL_RATIOS = [1.0, 2.0, 2.74, 3.69, 4.81, 6.32, 8.15, 10.4]
+GONG_PARTIAL_AMPS = [1.0, 0.65, 0.5, 0.45, 0.38, 0.3, 0.22, 0.15]
+GONG_PARTIAL_DECAYS = [3.4, 2.8, 2.3, 1.9, 1.5, 1.1, 0.8, 0.55]   # Abklingzeit (s)
+GONG_ATTACK_SEC = 0.003    # kurzer Fade-In gegen Knacken
+MASTER_GAIN = 1.0          # voller Pegel (Normierung auf Peak verhindert Clipping)
+
+# Bloom/Swell: der Gong "blueht" nach dem Anschlag kurz auf, statt sofort am
+# lautesten zu sein (typisches Tam-Tam-Verhalten). 0 = aus (sofortiger Anschlag).
+GONG_BLOOM_TAU = 0.10      # Anstiegszeit des Swells in s
+
+# Pitch-Glide: beim Tagesschau-Gong nur ganz dezent abfallend (kein China-Glide).
+GONG_GLIDE_START = 1.0     # Faktor direkt beim Schlag
+GONG_GLIDE_END = 0.985     # leicht abfallend -> wirkt "satt"/setzt sich
+GONG_GLIDE_TAU = 0.5       # Zeitkonstante des Glides in s
+
+# Metallisches Schimmern: dezenter, etwas laenger ausklingender Rausch-Anteil.
+GONG_SHIMMER_AMP = 0.18    # Anteil des Schimmerns (0 = aus)
+GONG_SHIMMER_DECAY = 0.35  # Abklingzeit des Schimmerns in s
