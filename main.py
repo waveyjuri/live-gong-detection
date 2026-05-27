@@ -66,7 +66,7 @@ def main() -> int:
             if kickroll_active:
                 # Kickroll-Modus: Bassline-Schlaege abfeuern, Gong pausiert
                 for vol in kick_result.kicks:
-                    gong.play_kick(vol)
+                    gong.play_kick(vol, now)
                     last_kick_time = now
                     print(f"KICK  vol={vol:.2f}")
             elif result.triggered:

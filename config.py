@@ -93,5 +93,12 @@ KICK_GAIN = 1.0            # Gesamtpegel des Bass
 # Tonfolge: pro Schlag wird der naechste Halbton-Versatz (relativ zur Basis)
 # durchlaufen -> aus dem Trommeln wird eine treibende Bassline. Werte in
 # Halbtonschritten; bei jedem neuen Kickroll startet die Folge von vorn.
-KICK_SEQUENCE = [0, 0, 3, 0, 5, 3, 7, 5]  # Moll-Pentatonik-Groove
+KICK_SEQUENCE = [0, 0, 3, 0, 5, 3, 7, 5]  # eigener Hard-Dance-Riff (Halbtoene)
 KICK_SEQUENCE_RESET = True  # True = jeder neue Kickroll beginnt am Anfang der Folge
+
+# Melodie-Tempo (Mindestabstand): eine NEUE Note der KICK_SEQUENCE wird nur
+# gespielt, wenn seit der letzten Melodie-Note mind. so viele Sekunden vergangen
+# sind. Schnellere Fuell-Schlaege dazwischen bleiben auf dem Grundton
+# (KICK_MELODY_FILL_SEMI) und treiben die Melodie NICHT durch -> bleibt im Takt.
+KICK_MELODY_MIN_GAP = 0.18  # Sekunden zwischen zwei Melodie-Noten
+KICK_MELODY_FILL_SEMI = 0   # Halbton der Fuell-Schlaege (0 = Grundton)

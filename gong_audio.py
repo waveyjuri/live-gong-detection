@@ -120,8 +120,10 @@ class GongPlayer:
         self._base = synth_gong_base()
         # Bassline: pro Schlag durchlaufene Tonfolge, Varianten einmal vorab erzeugen
         self._kick_seq = list(config.KICK_SEQUENCE) or [0]
-        self._kick_variants = {s: synth_kick_base(s) for s in set(self._kick_seq)}
+        semis = set(self._kick_seq) | {config.KICK_MELODY_FILL_SEMI}
+        self._kick_variants = {s: synth_kick_base(s) for s in semis}
         self._kick_idx = 0
+        self._last_melody_time = -1e9   # fuer den Melodie-Mindestabstand
         self._voices: list[list] = []   # je Stimme: [samples, position]
         self._lock = threading.Lock()
         self._stream = None
@@ -176,18 +178,28 @@ class GongPlayer:
             return
         self._add_voice((self._base * float(volume)).astype(np.float32))
 
-    def play_kick(self, volume: float) -> None:
-        """Naechsten Bass der Tonfolge (Lautstaerke 0..1) abfeuern; parallel."""
+    def play_kick(self, volume: float, now: float) -> None:
+        """Bass abfeuern; rueckt die Melodie nur bei genug Abstand weiter.
+
+        Liegt seit der letzten Melodie-Note >= KICK_MELODY_MIN_GAP, wird die
+        naechste Note der Folge gespielt; schnellere Fuell-Schlaege bleiben auf
+        dem Grundton und treiben die Melodie nicht durch.
+        """
         if not self._available:
             return
-        semi = self._kick_seq[self._kick_idx % len(self._kick_seq)]
-        self._kick_idx += 1
+        if now - self._last_melody_time >= config.KICK_MELODY_MIN_GAP:
+            semi = self._kick_seq[self._kick_idx % len(self._kick_seq)]
+            self._kick_idx += 1
+            self._last_melody_time = now
+        else:
+            semi = config.KICK_MELODY_FILL_SEMI
         base = self._kick_variants[semi]
         self._add_voice((base * float(volume)).astype(np.float32))
 
     def reset_kick_sequence(self) -> None:
         """Tonfolge auf den Anfang setzen (z.B. bei neuem Kickroll)."""
         self._kick_idx = 0
+        self._last_melody_time = -1e9
 
     def close(self) -> None:
         if self._available and self._stream is not None:
