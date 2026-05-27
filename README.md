@@ -16,6 +16,11 @@ lauter der Gong.
   auf eine Lautstärke abgebildet.
 - **Gong-Klang:** synthetisch mit NumPy erzeugt (inharmonische, abklingende
   Sinus-Obertöne → metallischer Klang), non-blocking über `sounddevice` abgespielt.
+- **Kickroll (beidhändig):** Werden **beide Hände** erkannt und trommelt die Person
+  schnell in die Luft, schaltet die App in den Kickroll-Modus und feuert pro
+  Abwärts-Schlag (pro Hand, eigener Cooldown) einen harten Uptempo-**Kick** ab
+  (synthetischer Bassdrum-Kick mit Pitch-Sweep + Saturation). Solange der
+  Kickroll-Modus aktiv ist, pausiert der Gong. Die Box wird dabei magenta.
 
 ## Setup (Windows / PowerShell)
 
@@ -51,5 +56,6 @@ Kamera/Umgebung anpassen.
 | `config.py` | zentrale Tuning-Parameter |
 | `pose_detector.py` | YOLO-Pose-Wrapper |
 | `strike_detector.py` | Handgelenk-Tracking + Schlagerkennung + Momentum→Lautstärke |
-| `gong_audio.py` | Gong-Synthese + non-blocking Audio-Thread |
+| `kickroll_detector.py` | beidhändiges Luft-Trommeln → harte Uptempo-Kicks |
+| `gong_audio.py` | Gong- + Kick-Synthese, polyphone non-blocking Wiedergabe |
 | `visualizer.py` | Bounding-Box, Marker und Status-Overlay |

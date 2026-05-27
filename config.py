@@ -61,3 +61,37 @@ GONG_GLIDE_TAU = 0.5       # Zeitkonstante des Glides in s
 # Metallisches Schimmern: dezenter, etwas laenger ausklingender Rausch-Anteil.
 GONG_SHIMMER_AMP = 0.18    # Anteil des Schimmerns (0 = aus)
 GONG_SHIMMER_DECAY = 0.35  # Abklingzeit des Schimmerns in s
+
+# --- Kickroll (beidhaendiges Luft-Trommeln) ---
+# Werden BEIDE Haende erkannt und macht die Person schnelle Abwaerts-Schlaege
+# (Luft-Trommeln), wird pro Schlag ein harter Kick gespielt; der Gong pausiert.
+KICKROLL_ENABLE = True
+KICK_SMOOTH_WINDOW = 2     # kurze Glaettung -> bleibt fuer schnelles Trommeln reaktiv
+V_KICK_ENTER = 1.1         # vertikale Abwaerts-Geschwindigkeit, ab der ein Kick zaehlt
+V_KICK_EXIT = 0.4          # darunter ist die Hand "oben" -> bereit fuer den naechsten
+KICK_COOLDOWN = 0.08       # Mindestabstand zweier Kicks DERSELBEN Hand (Uptempo)
+KICKROLL_WINDOW = 1.0      # beide Haende muessen binnen dieser Zeit getroffen haben
+KICK_V_MIN = 2.5           # Geschwindigkeit -> Mindestlautstaerke
+KICK_V_MAX = 12.0          # Geschwindigkeit -> maximale Lautstaerke
+KICK_VOL_FLOOR = 0.55      # Mindestlautstaerke eines Kicks (0..1)
+KICK_LOUDNESS_GAMMA = 0.6  # perzeptuelle Kurve
+
+# Bass-Synthese (Hardtechno-Bass: brutal uebersteuert, brettartig/verzerrt)
+KICK_DURATION = 0.42       # Sekunden (kurz/treibend fuer Uptempo)
+KICK_START_FREQ = 95.0     # Anfangsfrequenz in Hz (etwas Punch im Anschlag)
+KICK_END_FREQ = 52.0       # Endfrequenz in Hz (tiefer, druckvoller Bass)
+KICK_PITCH_TAU = 0.040     # Zeitkonstante des Pitch-Sweeps in s
+KICK_DECAY = 0.28          # Abklingzeit des Bass-Koerpers in s
+KICK_HARM2_AMP = 0.15      # 2. Harmonische (Distortion liefert die meisten Oberwellen)
+KICK_CLICK_AMP = 0.0       # Klick-Transient AUS
+KICK_CLICK_SEC = 0.004     # Laenge des Klicks in s (ungenutzt bei AMP=0)
+KICK_DRIVE = 9.0           # tanh-Saturation -> Sinus wird fast Square (Hardtechno-Biss)
+KICK_HARDCLIP = 0.55       # zusaetzliches Hard-Clipping (< 1.0 = brettartiger/aggressiver)
+KICK_ATTACK_SEC = 0.003    # kurzer Fade-In gegen Knacken
+KICK_GAIN = 1.0            # Gesamtpegel des Bass
+
+# Tonfolge: pro Schlag wird der naechste Halbton-Versatz (relativ zur Basis)
+# durchlaufen -> aus dem Trommeln wird eine treibende Bassline. Werte in
+# Halbtonschritten; bei jedem neuen Kickroll startet die Folge von vorn.
+KICK_SEQUENCE = [0, 0, 3, 0, 5, 3, 7, 5]  # Moll-Pentatonik-Groove
+KICK_SEQUENCE_RESET = True  # True = jeder neue Kickroll beginnt am Anfang der Folge
